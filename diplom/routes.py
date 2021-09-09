@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
-from diploma import app 
-from diploma.forms import RegistrationForm, LoginForm 
-from diploma.models import User, Post
+from diplom import app, db, bcrypt
+from diplom.forms import RegistrationForm, LoginForm 
+from diplom.models import User, Post
  
 posts = [
     {
@@ -32,8 +32,12 @@ def help():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        hash_pass = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
+        user = User(username=form.username.data, email=form.email.data, password=hash_pass)
+        db.session.add(user)
+        db.session.commit()
         flash(f"Account created for {form.username.data}!", "success")
-        return redirect(url_for("home"))
+        return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
 
 @app.route("/login", methods=["GET", "POST"])

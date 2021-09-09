@@ -1,5 +1,5 @@
 from datetime import datetime
-from diploma import db
+from diplom import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,3 +22,5 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+db.create_all()
