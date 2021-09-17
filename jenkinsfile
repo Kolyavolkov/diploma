@@ -3,7 +3,7 @@ properties([disableConcurrentBuilds()])
 
 pipeline {
     agent {
-        docker { image 'python:3.9.7' }
+        label 'master'
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
