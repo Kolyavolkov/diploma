@@ -11,8 +11,10 @@ pipeline {
     }
     stages {
         stage("Create docker image") {
-            echo "======== building image ========"
-            sh 'docker build . '
+            steps {
+                echo "======== building image ========"
+                sh 'docker build . '
+            }
         }
     }
 }
