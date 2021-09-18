@@ -15,7 +15,7 @@ pipeline {
                 echo "======== building image ========"
                 sh 'docker build -t kolyavolkov/myrestapi:1.0.0 . '
                 echo "======== pushing image to dockerhub ========"
-                sh 'docker push kolyavolkov/myrestapi'
+                sh 'docker push kolyavolkov/myrestapi:1.0.0'
             }
 
         }
