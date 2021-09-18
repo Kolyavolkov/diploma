@@ -9,13 +9,17 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
         timestamps()
     }
+    environment {
+		DOCKERHUB_CREDENTIALS=credentials('kolyavolkov')
+	}
     stages {
         stage("Create and push docker image") {
             steps {
                 echo "======== building image ========"
-                sh 'docker build -t kolyavolkov/myrestapi:1.0.0 . '
+                sh 'docker build -t kolyavolkov/myrestapi:latest . '
                 echo "======== pushing image to dockerhub ========"
-                sh 'docker push kolyavolkov/myrestapi:1.0.0'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push kolyavolkov/myrestapi:latest'
             }
 
         }
