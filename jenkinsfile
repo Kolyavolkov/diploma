@@ -13,9 +13,9 @@ pipeline {
         stage("Create and push docker image") {
             steps {
                 echo "======== building image ========"
-                sh 'docker build -t kolyavolkov/MyRestApi:1.0.0 . '
+                sh 'docker build -t kolyavolkov/myrestapi:1.0.0 . '
                 echo "======== pushing image to dockerhub ========"
-                sh 'docker push kolyavolkov/MyRestApi'
+                sh 'docker push kolyavolkov/myrestapi'
             }
 
         }
