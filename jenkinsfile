@@ -1,6 +1,8 @@
 #!groovy
 properties([disableConcurrentBuilds()])
 
+def TAG = 'kolyavolkov/myrestapi:v1.0.$BUILD_ID'
+
 pipeline {
     agent {
         label 'master'
@@ -16,7 +18,7 @@ pipeline {
         stage("Create and push docker image") {
             steps {
                 echo "======== building image ========"
-                sh 'docker build -t kolyavolkov/myrestapi:latest . '
+                sh 'docker build -t kolyavolkov/myrestapi:latest -t kolyavolkov/myrestapi:v1.0.$TAG . '
                 echo "======== pushing image to dockerhub ========"
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 sh 'docker push kolyavolkov/myrestapi:latest'
