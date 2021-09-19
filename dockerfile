@@ -2,7 +2,7 @@
 FROM python:3.9-alpine
 LABEL maintaner="Volkov Nikolai"
 WORKDIR .
-RUN apk add --no-cache zlib-dev jpeg-dev gcc musl-dev linux-headers libffi-dev build-base
+RUN apk add --no-cache zlib-dev jpeg-dev gcc musl-dev linux-headers libffi-dev build-base curl
 COPY . .
 RUN pip3 install -r requirements.txt
 ENTRYPOINT [ "python3", "run.py"]
