@@ -18,10 +18,10 @@ pipeline {
         stage("Create and push docker image") {
             steps {
                 echo "======== building image ========"
-                sh "docker build -t kolyavolkov/myrestapi:latest -t kolyavolkov/myrestapi:v1.0.${TAG} . "
+                sh "docker build  -t ${TAG} . "
                 echo "======== pushing image to dockerhub ========"
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker push kolyavolkov/myrestapi:latest'
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                sh "docker push ${TAG}"
             }
 
         }
