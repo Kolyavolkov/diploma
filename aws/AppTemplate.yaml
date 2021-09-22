@@ -250,34 +250,6 @@ Resources :
         - 2
         - Fn::GetAZs: !Ref AWS::Region
 
-  # AppSubnet1:
-  #   Type: AWS::EC2::Subnet
-  #   Properties:
-  #     VpcId: !Ref AppVpc
-  #     CidrBlock: !Select [ 5, !Cidr [ !Ref VpcCidr, 12, 8 ] ]
-  #     MapPublicIpOnLaunch: False
-  #     AvailabilityZone: !Select
-  #       - 0
-  #       - Fn::GetAZs: !Ref AWS::Region
-  # AppSubnet2:
-  #   Type: AWS::EC2::Subnet
-  #   Properties:
-  #     VpcId: !Ref AppVpc
-  #     CidrBlock: !Select [ 6, !Cidr [ !Ref VpcCidr, 12, 8 ] ]
-  #     MapPublicIpOnLaunch: False
-  #     AvailabilityZone: !Select
-  #       - 1
-  #       - Fn::GetAZs: !Ref AWS::Region
-  # AppSubnet3:
-  #   Type: AWS::EC2::Subnet
-  #   Properties:
-  #     VpcId: !Ref AppVpc
-  #     CidrBlock: !Select [ 7, !Cidr [ !Ref VpcCidr, 12, 8 ] ]
-  #     MapPublicIpOnLaunch: False
-  #     AvailabilityZone: !Select
-  #       - 2
-  #       - Fn::GetAZs: !Ref AWS::Region
-
   PublicRouteTable :
     Type : AWS::EC2::RouteTable
     Properties :
@@ -312,48 +284,6 @@ Resources :
     Properties:
       BucketName: profile-pictures-app-volkov
 
-  AppEIP:
-    Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
-    Properties: {}
-
-  # AppNAT:
-  #   Type: AWS::EC2::NatGateway
-  #   Properties:
-  #     AllocationId: !GetAtt AppEIP.AllocationId
-  #     SubnetId: !Ref PublicSubnet1
-
-  # RouteToNat:
-  #   Type: AWS::EC2::Route
-  #   DependsOn: InternetGateway
-  #   Properties:
-  #     RouteTableId: !Ref PrivateRouteTable
-  #     DestinationCidrBlock: 0.0.0.0/0
-  #     NatGatewayId: !Ref AppNAT
-
-  # PrivateRouteTable:
-  #   Type: AWS::EC2::RouteTable
-  #   Properties:
-  #     VpcId: !Ref AppVpc
-
-  # PrivateSubnetRouteTableAssociation1:
-  #   Type: AWS::EC2::SubnetRouteTableAssociation
-  #   Properties:
-  #     SubnetId: !Ref AppSubnet1
-  #     RouteTableId: !Ref PublicRouteTable
-
-  # PrivateSubnetRouteTableAssociation2:
-  #   Type: AWS::EC2::SubnetRouteTableAssociation
-  #   Properties:
-  #     SubnetId: !Ref AppSubnet2
-  #     RouteTableId: !Ref PublicRouteTable
-
-  # PrivateSubnetRouteTableAssociation3:
-  #   Type: AWS::EC2::SubnetRouteTableAssociation
-  #   Properties:
-  #     SubnetId: !Ref AppSubnet3
-  #     RouteTableId: !Ref PublicRouteTable
-
   ELBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -375,13 +305,6 @@ Resources :
         CreditSpecification:
           CpuCredits: Unlimited
         ImageId: ami-07df274a488ca9195
-          # Fn::FindInMap:
-          #   - AWSRegionArch2AMI
-          #   - Ref: AWS::Region
-          #   - Fn::FindInMap:
-          #       - AWSInstanceType2Arch
-          #       - Ref: InstanceType
-          #       - Arch
         InstanceType: !Ref InstanceType
         KeyName: !Ref KeyName
         Monitoring:
@@ -396,7 +319,7 @@ Resources :
             service docker start
             usermod -a -G docker ec2-user
             chkconfig docker on
-            docker run -p 80:5000 kolyavolkov/myrestapi:v1:0.15
+            docker run -p 80:5000 kolyavolkov/myrestapi:v1.0.7
 
   AppASG:
     Type: AWS::AutoScaling::AutoScalingGroup
